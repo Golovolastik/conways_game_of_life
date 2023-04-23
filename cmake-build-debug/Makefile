@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main_work
+# Target rules for targets named conways_game_of_life
 
 # Build rule for target.
-main_work: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main_work
-.PHONY : main_work
+conways_game_of_life: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 conways_game_of_life
+.PHONY : conways_game_of_life
 
 # fast build rule for target.
-main_work/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/build
-.PHONY : main_work/fast
+conways_game_of_life/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/build
+.PHONY : conways_game_of_life/fast
 
 main.o: main.c.o
 .PHONY : main.o
 
 # target to build an object file
 main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/main.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/main.c.o
 .PHONY : main.c.o
 
 main.i: main.c.i
@@ -142,7 +142,7 @@ main.i: main.c.i
 
 # target to preprocess a source file
 main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/main.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/main.c.i
 .PHONY : main.c.i
 
 main.s: main.c.s
@@ -150,7 +150,7 @@ main.s: main.c.s
 
 # target to generate assembly for a file
 main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/main.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/main.c.s
 .PHONY : main.c.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... main_work"
+	@echo "... conways_game_of_life"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

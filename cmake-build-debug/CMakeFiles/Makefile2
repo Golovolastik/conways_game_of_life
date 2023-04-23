@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конс
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/main_work.dir/all
+all: CMakeFiles/conways_game_of_life.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/main_work.dir/clean
+clean: CMakeFiles/conways_game_of_life.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/main_work.dir
+# Target rules for target CMakeFiles/conways_game_of_life.dir
 
 # All Build rule for target.
-CMakeFiles/main_work.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target main_work"
-.PHONY : CMakeFiles/main_work.dir/all
+CMakeFiles/conways_game_of_life.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target conways_game_of_life"
+.PHONY : CMakeFiles/conways_game_of_life.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/main_work.dir/rule: cmake_check_build_system
+CMakeFiles/conways_game_of_life.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main_work.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/conways_game_of_life.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 0
-.PHONY : CMakeFiles/main_work.dir/rule
+.PHONY : CMakeFiles/conways_game_of_life.dir/rule
 
 # Convenience name for target.
-main_work: CMakeFiles/main_work.dir/rule
-.PHONY : main_work
+conways_game_of_life: CMakeFiles/conways_game_of_life.dir/rule
+.PHONY : conways_game_of_life
 
 # clean rule for target.
-CMakeFiles/main_work.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main_work.dir/build.make CMakeFiles/main_work.dir/clean
-.PHONY : CMakeFiles/main_work.dir/clean
+CMakeFiles/conways_game_of_life.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/clean
+.PHONY : CMakeFiles/conways_game_of_life.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
