@@ -1,0 +1,3 @@
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles/main_work.dir
