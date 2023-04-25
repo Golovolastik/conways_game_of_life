@@ -9,6 +9,9 @@ int change_screen_color(SDL_Window*, SDL_Renderer*);
 struct Cell{
     // true - white, false - black
     bool color;
+    bool died;
+    int pos_x;
+    int pos_y;
 };
 
 struct Board {
@@ -28,7 +31,7 @@ int main(int argc, char* argv[]) {
     SDL_Window* window = SDL_CreateWindow("Мое окно",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                          640, 480, SDL_WINDOW_SHOWN);
+                                              750, 750, SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Ошибка при создании окна: %s\n", SDL_GetError());
         return 1;
@@ -40,22 +43,25 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // calculate board
-    // render
-
     // создание поля
-    struct Board board = init_board(10, 10);
+    struct Board board = init_board(20, 20);
 
-    draw_board(&board, window, renderer);
-    //run_black_screen(window, renderer);
-    //change_screen_color(window, renderer);
+    // стартовая раскладка клеток
+    board.board_array[2][1].color = false;
+    board.board_array[6][4].color = false;
+    board.board_array[6][5].color = false;
+    board.board_array[8][3].color = false;
+    board.board_array[14][9].color = false;
+    //printf("x: %d y: %d", board.board_array[14][9].pos_y, board.board_array[14][9].pos_x);
+    //board.board_array[5][6].color = false;
+
+    //draw_board(&board, window, renderer);
 
     // основной цикл обработки событий
     SDL_Event event;
     int quit = 0;
-
     while (!quit) {
-        //draw_board(&board, window, renderer);
+        draw_board(&board, window, renderer);
         // обработка событий
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -77,6 +83,8 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+
 
 int run_black_screen(SDL_Window* window, SDL_Renderer* renderer){
 
@@ -167,12 +175,13 @@ struct Board init_board(int height, int width){
     struct Board board;
     board.height = height;
     board.width = width;
-    board.board_array = malloc(board.width *  sizeof(struct Cell*));
+    board.board_array = malloc(board.height *  sizeof(struct Cell*));
     for (int i = 0; i < board.height; i++) {
         board.board_array[i] = malloc(board.width * sizeof(struct Cell));
         // Инициализируем каждый элемент структурой Cell
         for (int j = 0; j < board.width; j++) {
-            struct Cell new_cell = { .color = true }; // Создаем новый экземпляр структуры Cell
+            struct Cell new_cell = {
+                    .color = true, .died = false, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
             board.board_array[i][j] = new_cell; // Присваиваем значение элементу массива
         }
     }
@@ -180,14 +189,27 @@ struct Board init_board(int height, int width){
     return board;
 }
 
+// not works
 void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer){
     // отрисовка поля квадратов
-    SDL_Rect rects[100];
-    for (int i = 0; i < 100; i++) {
-        rects[i].x = (i % 10) * 50;
-        rects[i].y = (i / 10) * 50;
-        rects[i].w = 50;
-        rects[i].h = 50;
+    int size = 15;
+    SDL_Rect rects[size*size];
+    // добавить отрисовку сюда
+    for (int i = 0; i < size; i++) {
+        for (int j=0; j < size; j++){
+            rects[i*size + j].y = (i) * 50;
+            rects[i*size + j].x = (j) * 50;
+            rects[i*size + j].w = 50;
+            rects[i*size + j].h = 50;
+        }
+
+//        if(board->board_array[i]->color) {
+//            SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+//            SDL_RenderFillRect(renderer, &rects[i]);
+//        } /*else{
+//            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+//            SDL_RenderFillRect(renderer, &rects[i]);
+//        }*/
     }
 
     // заполняем экран белым цветом
@@ -195,17 +217,29 @@ void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer)
     SDL_RenderClear(renderer);
 
     // отрисовываем 100 квадратов
-    for (int i = 0; i < 100; i++) {
-        // рисуем границу квадрата
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderDrawRect(renderer, &rects[i]);
+    for (int i = 0; i<size; i++) {
+        for (int j=0; j<size; j++) {
+            // рисуем границу квадрата
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &rects[i*size + j]);
+            if (board->board_array[i][j].color == false) {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                //SDL_RenderDrawRect(renderer, &rects[i*size + j]);
+                SDL_RenderFillRect(renderer, &rects[i*size + j]);
+            }
+        }
     }
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-    // показать рендер
+    //SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+
     //SDL_RenderPresent(renderer);
-    SDL_RenderFillRect(renderer, &rects[34]);
+    //SDL_RenderFillRect(renderer, &rects[34]);
+    //SDL_RenderFillRect(renderer, &rects[49]);
+
+    // показать рендер
     SDL_RenderPresent(renderer);
+
+    SDL_Delay(200);
 }
 
 void render(SDL_Window* window, SDL_Renderer* renderer, struct Board* board){
