@@ -45,23 +45,30 @@ int main(int argc, char* argv[]) {
     }
 
     // создание поля
-    struct Board board = init_board(20, 20);
+    struct Board board = init_board(15, 15);
 
     // стартовая раскладка клеток
+    board.board_array[0][0].alive = true;
+    board.board_array[14][14].alive = true;
+    board.board_array[0][9].alive = true;
+    board.board_array[14][11].alive = true;
     board.board_array[2][1].alive = true;
     board.board_array[6][4].alive = true;
     board.board_array[6][5].alive = true;
+    board.board_array[6][6].alive = true;
     board.board_array[8][3].alive = true;
-    board.board_array[14][9].alive = true;
+    board.board_array[8][0].alive = true;
+    board.board_array[8][14].alive = true;
+    board.board_array[11][12].alive = true;
     board.board_array[13][8].died = true;
     board.board_array[12][7].died = true;
     board.board_array[13][6].died = true;
     //printf("x: %d y: %d", board.board_array[14][9].pos_y, board.board_array[14][9].pos_x);
     //board.board_array[5][6].color = false;
-    for (int i=0; i<20; i++){
-        for(int j=0; j<20; j++) {
+    for (int i=0; i<15; i++){
+        for(int j=0; j<15; j++) {
             if (board.board_array[i][j].alive){
-                printf("Cell [%d][%d] has %d neighbors.\n", j+1, i+1, neighbors_count(&board, &board.board_array[i][j], 20));
+                printf("Cell [%d][%d] has %d neighbors.\n", j+1, i+1, neighbors_count(&board, &board.board_array[i][j], 15));
             }
         }
     }
@@ -219,7 +226,7 @@ void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer)
 }
 
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board){
-    // отрисовываем 100 квадратов
+    // отрисовываем квадратов
     for (int i = 0; i<size; i++) {
         for (int j=0; j<size; j++) {
             // инициализируем клетки
@@ -247,7 +254,13 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board
 int neighbors_count(struct Board* board, struct Cell* cell, int size) {
     int neighbors = 0;
     for (int i = cell->pos_y - 1; i <= cell->pos_y + 1; i++) {
+        if (i == -1){
+            i++;
+        }else if (i == size){continue;}
         for (int j = cell->pos_x - 1; j <= cell->pos_x + 1; j++) {
+            if (j == -1){
+                j++;
+            }else if (j == size){continue;}
             if (j == cell->pos_x && i == cell->pos_y) { continue; }
             if (board->board_array[i][j].alive) {
                 neighbors++;
