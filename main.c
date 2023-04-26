@@ -1,14 +1,9 @@
 #include <SDL.h>
 #include <stdbool.h>
 
-struct Board init_board(int height, int width);
-void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer);
-int run_black_screen(SDL_Window*, SDL_Renderer*);
-int change_screen_color(SDL_Window*, SDL_Renderer*);
-
 struct Cell{
     // true - white, false - black
-    bool color;
+    bool alive;
     bool died;
     int pos_x;
     int pos_y;
@@ -21,6 +16,12 @@ struct Board {
 
 };
 
+int neighbors_count(struct Board* board, struct Cell* cell, int size);
+struct Board init_board(int height, int width);
+void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer);
+void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board);
+int run_black_screen(SDL_Window*, SDL_Renderer*);
+int change_screen_color(SDL_Window*, SDL_Renderer*);
 
 
 int main(int argc, char* argv[]) {
@@ -47,13 +48,23 @@ int main(int argc, char* argv[]) {
     struct Board board = init_board(20, 20);
 
     // стартовая раскладка клеток
-    board.board_array[2][1].color = false;
-    board.board_array[6][4].color = false;
-    board.board_array[6][5].color = false;
-    board.board_array[8][3].color = false;
-    board.board_array[14][9].color = false;
+    board.board_array[2][1].alive = true;
+    board.board_array[6][4].alive = true;
+    board.board_array[6][5].alive = true;
+    board.board_array[8][3].alive = true;
+    board.board_array[14][9].alive = true;
+    board.board_array[13][8].died = true;
+    board.board_array[12][7].died = true;
+    board.board_array[13][6].died = true;
     //printf("x: %d y: %d", board.board_array[14][9].pos_y, board.board_array[14][9].pos_x);
     //board.board_array[5][6].color = false;
+    for (int i=0; i<20; i++){
+        for(int j=0; j<20; j++) {
+            if (board.board_array[i][j].alive){
+                printf("Cell [%d][%d] has %d neighbors.\n", j+1, i+1, neighbors_count(&board, &board.board_array[i][j], 20));
+            }
+        }
+    }
 
     //draw_board(&board, window, renderer);
 
@@ -181,7 +192,7 @@ struct Board init_board(int height, int width){
         // Инициализируем каждый элемент структурой Cell
         for (int j = 0; j < board.width; j++) {
             struct Cell new_cell = {
-                    .color = true, .died = false, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
+                    .alive = false, .died = false, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
             board.board_array[i][j] = new_cell; // Присваиваем значение элементу массива
         }
     }
@@ -194,47 +205,12 @@ void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer)
     // отрисовка поля квадратов
     int size = 15;
     SDL_Rect rects[size*size];
-    // добавить отрисовку сюда
-    for (int i = 0; i < size; i++) {
-        for (int j=0; j < size; j++){
-            rects[i*size + j].y = (i) * 50;
-            rects[i*size + j].x = (j) * 50;
-            rects[i*size + j].w = 50;
-            rects[i*size + j].h = 50;
-        }
-
-//        if(board->board_array[i]->color) {
-//            SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-//            SDL_RenderFillRect(renderer, &rects[i]);
-//        } /*else{
-//            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-//            SDL_RenderFillRect(renderer, &rects[i]);
-//        }*/
-    }
 
     // заполняем экран белым цветом
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
 
-    // отрисовываем 100 квадратов
-    for (int i = 0; i<size; i++) {
-        for (int j=0; j<size; j++) {
-            // рисуем границу квадрата
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderDrawRect(renderer, &rects[i*size + j]);
-            if (board->board_array[i][j].color == false) {
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                //SDL_RenderDrawRect(renderer, &rects[i*size + j]);
-                SDL_RenderFillRect(renderer, &rects[i*size + j]);
-            }
-        }
-    }
-
-    //SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
-
-    //SDL_RenderPresent(renderer);
-    //SDL_RenderFillRect(renderer, &rects[34]);
-    //SDL_RenderFillRect(renderer, &rects[49]);
+    draw_cells(rects, renderer, size, board);
 
     // показать рендер
     SDL_RenderPresent(renderer);
@@ -242,6 +218,42 @@ void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer)
     SDL_Delay(200);
 }
 
-void render(SDL_Window* window, SDL_Renderer* renderer, struct Board* board){
+void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board){
+    // отрисовываем 100 квадратов
+    for (int i = 0; i<size; i++) {
+        for (int j=0; j<size; j++) {
+            // инициализируем клетки
+            rects[i*size + j].y = (i) * 50;
+            rects[i*size + j].x = (j) * 50;
+            rects[i*size + j].w = 50;
+            rects[i*size + j].h = 50;
+            // закрашиваем клетки
+            if (board->board_array[i][j].alive) {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderFillRect(renderer, &rects[i*size + j]);
+            }
+            // рисуем границу мертвых клеток
+            if (board->board_array[i][j].died) {
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+            } else{
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+            }
+        }
+    }
+}
 
+int neighbors_count(struct Board* board, struct Cell* cell, int size) {
+    int neighbors = 0;
+    for (int i = cell->pos_y - 1; i <= cell->pos_y + 1; i++) {
+        for (int j = cell->pos_x - 1; j <= cell->pos_x + 1; j++) {
+            if (j == cell->pos_x && i == cell->pos_y) { continue; }
+            if (board->board_array[i][j].alive) {
+                neighbors++;
+            }
+        }
+    }
+
+    return neighbors;
 }
