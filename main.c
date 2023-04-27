@@ -4,7 +4,7 @@
 struct Cell{
     // true - white, false - black
     bool alive;
-    bool died;
+    //bool died;
     int pos_x;
     int pos_y;
 };
@@ -23,6 +23,7 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board
 void recalculate(struct Board* board, int size);
 int run_black_screen(SDL_Window*, SDL_Renderer*);
 int change_screen_color(SDL_Window*, SDL_Renderer*);
+struct Cell check_rules(struct Cell* cell, int count);
 
 
 int main(int argc, char* argv[]) {
@@ -49,26 +50,36 @@ int main(int argc, char* argv[]) {
     struct Board board = init_board(15, 15);
 
     // стартовая раскладка клеток
-    board.board_array[0][0].alive = true;
-    board.board_array[14][14].alive = true;
-    board.board_array[0][9].alive = true;
-    board.board_array[14][11].alive = true;
-    board.board_array[2][1].alive = true;
+    // 2 квадрата
+
     board.board_array[5][5].alive = true;
     board.board_array[5][6].alive = true;
     board.board_array[6][5].alive = true;
     board.board_array[6][6].alive = true;
-    board.board_array[8][3].alive = true;
     board.board_array[3][3].alive = true;
     board.board_array[4][3].alive = true;
     board.board_array[3][4].alive = true;
     board.board_array[4][4].alive = true;
-    board.board_array[8][0].alive = true;
-    board.board_array[8][14].alive = true;
-    board.board_array[11][12].alive = true;
-    board.board_array[13][8].died = true;
-    board.board_array[12][7].died = true;
-    board.board_array[13][6].died = true;
+
+    // палочка
+
+    board.board_array[12][10].alive = true;
+    board.board_array[12][11].alive = true;
+    board.board_array[12][9].alive = true;
+
+    // хлам
+//    board.board_array[0][0].alive = true;
+//    board.board_array[14][14].alive = true;
+//    board.board_array[0][9].alive = true;
+//    board.board_array[14][11].alive = true;
+//    board.board_array[2][1].alive = true;
+//    board.board_array[8][3].alive = true;
+//    board.board_array[8][0].alive = true;
+//    board.board_array[8][14].alive = true;
+//    board.board_array[11][12].alive = true;
+//    board.board_array[13][8].died = true;
+//    board.board_array[12][7].died = true;
+//    board.board_array[13][6].died = true;
     //printf("x: %d y: %d", board.board_array[14][9].pos_y, board.board_array[14][9].pos_x);
     //board.board_array[5][6].color = false;
 
@@ -215,7 +226,7 @@ struct Board init_board(int height, int width){
         // Инициализируем каждый элемент структурой Cell
         for (int j = 0; j < board.width; j++) {
             struct Cell new_cell = {
-                    .alive = false, .died = false, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
+                    .alive = false, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
             board.board_array[i][j] = new_cell; // Присваиваем значение элементу массива
         }
     }
@@ -255,14 +266,12 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                 SDL_RenderFillRect(renderer, &rects[i*size + j]);
             }
-//            // рисуем границу клеток
-//            if (board->board_array[i][j].died) {
-//                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-//                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
-//            } else{
-//                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-//                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
-//            }
+            // рисуем границу клеток
+//            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+//            SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+
         }
     }
 }
@@ -296,39 +305,63 @@ void recalculate(struct Board* board, int size) {
         // Инициализируем каждый элемент структурой Cell
         for (int j = 0; j < size; j++) {
             struct Cell new_cell = {
-                    .alive = false, .died = board->board_array[i][j].died, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
-            temp_board[i][j] = new_cell; // Присваиваем значение элементу массива
+                    .alive = false, /*.died = board->board_array[i][j].died,*/ .pos_x = j, .pos_y = i};
+            // Создаем новый экземпляр структуры Cell
+            int neighbors = neighbors_count(board, &board->board_array[i][j], 15);
+            temp_board[i][j] = check_rules(&board->board_array[i][j], neighbors); // Присваиваем значение элементу массива
+            temp_board[i][j].pos_x = j;
+            temp_board[i][j].pos_y = i;
         }
     }
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-//            if (!board->board_array[i][j].alive && !board->board_array[i][j].died) {
-//                continue;
+//    for (int i = 0; i < size; i++) {
+//        for (int j = 0; j < size; j++) {
+////            if (!board->board_array[i][j].alive && !board->board_array[i][j].died) {
+////                continue;
+////            }
+//
+//            // правило 1
+//            int count = neighbors_count(board, &board->board_array[i][j], size);
+//            if (count < 2) {
+//               temp_board[i][j].alive = false;
+//               //temp_board[i][j].died = true;
+//            // правило 2
+//            } else if (count <=3){
+//                temp_board[i][j].alive = true;
+//            // правило 3
+//            }else {
+//                temp_board[i][j].alive = false;
+//                temp_board[i][j].died = true;
 //            }
-
-            // правило 1
-            int count = neighbors_count(board, &board->board_array[i][j], size);
-            if (count < 2) {
-               temp_board[i][j].alive = false;
-               //temp_board[i][j].died = true;
-            // правило 2
-            } else if (count <=3){
-                temp_board[i][j].alive = true;
-            // правило 3
-            }else {
-                temp_board[i][j].alive = false;
-                temp_board[i][j].died = true;
-            }
-            // правило 4
-            if (count == 3){
-                temp_board[i][j].alive = true;
-            }
-        }
-    }
+//            // правило 4
+//            if (count == 3){
+//                temp_board[i][j].alive = true;
+//            }
+//        }
+//    }
     free(board->board_array);
     board->board_array = temp_board;
 }
 
-struct Cell check_rules(struct Cell*, int count){
+struct Cell check_rules(struct Cell* cell, int count){
+    struct Cell result;
+    if (!cell->alive && count == 3){
+        // правило 4
+            result.alive = true;
+        return result;
+    } else if (!cell->alive){
+        result.alive = false;
+        return result;
+    }
+    if (count < 2) {
+        result.alive = false;
+        //temp_board[i][j].died = true;
+        // правило 2
+    } else if (count > 3){
+        result.alive = false;
+        // правило 3
+    }else {
+        result.alive = true;
+    }
 
+    return result;
 }
