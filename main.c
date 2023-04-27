@@ -4,9 +4,7 @@
 #define CELL_SIZE 15
 
 struct Cell{
-    // true - white, false - black
     bool alive;
-    //bool died;
     int pos_x;
     int pos_y;
 };
