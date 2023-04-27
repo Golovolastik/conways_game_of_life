@@ -313,31 +313,6 @@ void recalculate(struct Board* board, int size) {
             temp_board[i][j].pos_y = i;
         }
     }
-//    for (int i = 0; i < size; i++) {
-//        for (int j = 0; j < size; j++) {
-////            if (!board->board_array[i][j].alive && !board->board_array[i][j].died) {
-////                continue;
-////            }
-//
-//            // правило 1
-//            int count = neighbors_count(board, &board->board_array[i][j], size);
-//            if (count < 2) {
-//               temp_board[i][j].alive = false;
-//               //temp_board[i][j].died = true;
-//            // правило 2
-//            } else if (count <=3){
-//                temp_board[i][j].alive = true;
-//            // правило 3
-//            }else {
-//                temp_board[i][j].alive = false;
-//                temp_board[i][j].died = true;
-//            }
-//            // правило 4
-//            if (count == 3){
-//                temp_board[i][j].alive = true;
-//            }
-//        }
-//    }
     free(board->board_array);
     board->board_array = temp_board;
 }
