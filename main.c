@@ -20,6 +20,7 @@ int neighbors_count(struct Board* board, struct Cell* cell, int size);
 struct Board init_board(int height, int width);
 void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer);
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board);
+void recalculate(struct Board* board, int size);
 int run_black_screen(SDL_Window*, SDL_Renderer*);
 int change_screen_color(SDL_Window*, SDL_Renderer*);
 
@@ -53,10 +54,15 @@ int main(int argc, char* argv[]) {
     board.board_array[0][9].alive = true;
     board.board_array[14][11].alive = true;
     board.board_array[2][1].alive = true;
-    board.board_array[6][4].alive = true;
+    board.board_array[5][5].alive = true;
+    board.board_array[5][6].alive = true;
     board.board_array[6][5].alive = true;
     board.board_array[6][6].alive = true;
     board.board_array[8][3].alive = true;
+    board.board_array[3][3].alive = true;
+    board.board_array[4][3].alive = true;
+    board.board_array[3][4].alive = true;
+    board.board_array[4][4].alive = true;
     board.board_array[8][0].alive = true;
     board.board_array[8][14].alive = true;
     board.board_array[11][12].alive = true;
@@ -65,13 +71,15 @@ int main(int argc, char* argv[]) {
     board.board_array[13][6].died = true;
     //printf("x: %d y: %d", board.board_array[14][9].pos_y, board.board_array[14][9].pos_x);
     //board.board_array[5][6].color = false;
-    for (int i=0; i<15; i++){
-        for(int j=0; j<15; j++) {
-            if (board.board_array[i][j].alive){
-                printf("Cell [%d][%d] has %d neighbors.\n", j+1, i+1, neighbors_count(&board, &board.board_array[i][j], 15));
-            }
-        }
-    }
+
+    // calculate neighbors
+//    for (int i=0; i<15; i++){
+//        for(int j=0; j<15; j++) {
+//            if (board.board_array[i][j].alive){
+//                printf("Cell [%d][%d] has %d neighbors.\n", j+1, i+1, neighbors_count(&board, &board.board_array[i][j], 15));
+//            }
+//        }
+//    }
 
     //draw_board(&board, window, renderer);
 
@@ -80,6 +88,8 @@ int main(int argc, char* argv[]) {
     int quit = 0;
     while (!quit) {
         draw_board(&board, window, renderer);
+        recalculate(&board, 15);
+
         // обработка событий
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -88,9 +98,11 @@ int main(int argc, char* argv[]) {
                     break;
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_SPACE) {
-                        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-                        SDL_RenderClear(renderer);
-                        SDL_RenderPresent(renderer);
+                        recalculate(&board, 15);
+                        draw_board(&board, window, renderer);
+//                        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+//                        SDL_RenderClear(renderer);
+//                        SDL_RenderPresent(renderer);
                     }
                     break;
                 default:
@@ -98,6 +110,10 @@ int main(int argc, char* argv[]) {
             }
         }
     }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
     return 0;
 }
@@ -160,7 +176,7 @@ int change_screen_color(SDL_Window* window, SDL_Renderer* renderer){
         SDL_SetRenderDrawColor(renderer, r, g, b, 255);
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
-        SDL_Delay(300);
+        SDL_Delay(200);
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT: {
@@ -207,7 +223,7 @@ struct Board init_board(int height, int width){
     return board;
 }
 
-// not works
+// works
 void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer){
     // отрисовка поля квадратов
     int size = 15;
@@ -222,7 +238,7 @@ void draw_board(struct Board* board, SDL_Window* window, SDL_Renderer* renderer)
     // показать рендер
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(200);
+    SDL_Delay(500);
 }
 
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board){
@@ -239,14 +255,14 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
                 SDL_RenderFillRect(renderer, &rects[i*size + j]);
             }
-            // рисуем границу мертвых клеток
-            if (board->board_array[i][j].died) {
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
-            } else{
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
-            }
+//            // рисуем границу клеток
+//            if (board->board_array[i][j].died) {
+//                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+//                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+//            } else{
+//                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+//                SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+//            }
         }
     }
 }
@@ -269,4 +285,50 @@ int neighbors_count(struct Board* board, struct Cell* cell, int size) {
     }
 
     return neighbors;
+}
+
+void recalculate(struct Board* board, int size) {
+    // пропускаем цикл если клетка не была активна
+    struct Cell** temp_board;
+    temp_board = malloc(size *  sizeof(struct Cell*));
+    for (int i = 0; i < size; i++) {
+        temp_board[i] = malloc(size * sizeof(struct Cell));
+        // Инициализируем каждый элемент структурой Cell
+        for (int j = 0; j < size; j++) {
+            struct Cell new_cell = {
+                    .alive = false, .died = board->board_array[i][j].died, .pos_x = j, .pos_y = i}; // Создаем новый экземпляр структуры Cell
+            temp_board[i][j] = new_cell; // Присваиваем значение элементу массива
+        }
+    }
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+//            if (!board->board_array[i][j].alive && !board->board_array[i][j].died) {
+//                continue;
+//            }
+
+            // правило 1
+            int count = neighbors_count(board, &board->board_array[i][j], size);
+            if (count < 2) {
+               temp_board[i][j].alive = false;
+               //temp_board[i][j].died = true;
+            // правило 2
+            } else if (count <=3){
+                temp_board[i][j].alive = true;
+            // правило 3
+            }else {
+                temp_board[i][j].alive = false;
+                temp_board[i][j].died = true;
+            }
+            // правило 4
+            if (count == 3){
+                temp_board[i][j].alive = true;
+            }
+        }
+    }
+    free(board->board_array);
+    board->board_array = temp_board;
+}
+
+struct Cell check_rules(struct Cell*, int count){
+
 }
