@@ -1,20 +1,10 @@
 #include <SDL.h>
 #include <stdbool.h>
+#include "structs.h"
+
 #define SIZE 45
 #define CELL_SIZE 15
 
-struct Cell{
-    bool alive;
-    int pos_x;
-    int pos_y;
-};
-
-struct Board {
-    int height;
-    int width;
-    struct Cell** board_array;
-
-};
 
 int neighbors_count(struct Board* board, struct Cell* cell, int size);
 struct Board init_board(int height, int width);
