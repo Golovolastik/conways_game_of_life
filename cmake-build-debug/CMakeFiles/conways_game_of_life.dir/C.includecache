@@ -11,6 +11,10 @@ SDL.h
 -
 stdbool.h
 -
+structs.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/structs.h
+
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/structs.h
 
 /opt/homebrew/include/SDL2/SDL.h
 SDL_main.h

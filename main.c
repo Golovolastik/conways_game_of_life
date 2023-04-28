@@ -2,8 +2,8 @@
 #include <stdbool.h>
 #include "structs.h"
 
-#define SIZE 45
-#define CELL_SIZE 15
+#define SIZE 25
+#define CELL_SIZE 30
 
 
 int neighbors_count(struct Board* board, struct Cell* cell, int size);
@@ -87,20 +87,40 @@ int main(int argc, char* argv[]) {
 
     // основной цикл обработки событий
     SDL_Event event;
-    int quit = 0;
+
+    draw_board(&board, renderer);
+    bool quit = false;
+    bool execute = false;
     while (!quit) {
-        draw_board(&board, renderer);
-        recalculate(&board, SIZE);
-        // обработка событий
+        if (execute) {
+            recalculate(&board, SIZE);
+            draw_board(&board, renderer);
+            // цикличные события
+            if (SDL_PollEvent(&event)){
+                switch (event.type) {
+                    case SDL_QUIT:
+                        quit = true;
+                        break;
+                    case SDL_KEYDOWN:
+                        if (event.key.keysym.sym == SDLK_SPACE) {
+                            execute = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            continue;
+        }
+        // пауза и выход
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    quit = 1;
+                    quit = true;
                     break;
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_SPACE) {
-                        recalculate(&board, SIZE);
-                        draw_board(&board, renderer);
+                        execute = true;
                     }
                     break;
                 default:
