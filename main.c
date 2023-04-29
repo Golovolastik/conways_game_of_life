@@ -1,4 +1,5 @@
 #include <SDL.h>
+#include <SDL_mouse.h>
 #include <stdbool.h>
 #include "structs.h"
 
@@ -12,6 +13,7 @@ void draw_board(struct Board* board, SDL_Renderer* renderer);
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board);
 void recalculate(struct Board* board, int size);
 struct Cell check_rules(struct Cell* cell, int count);
+void add_cell(struct Board* board, int x, int y);
 
 
 int main(int argc, char* argv[]) {
@@ -88,6 +90,9 @@ int main(int argc, char* argv[]) {
     // основной цикл обработки событий
     SDL_Event event;
 
+    // показать указатель мыши
+    SDL_ShowCursor(SDL_ENABLE);
+
     draw_board(&board, renderer);
     bool quit = false;
     bool execute = false;
@@ -106,6 +111,7 @@ int main(int argc, char* argv[]) {
                             execute = false;
                         }
                         break;
+
                     default:
                         break;
                 }
@@ -123,6 +129,18 @@ int main(int argc, char* argv[]) {
                         execute = true;
                     }
                     break;
+                case SDL_MOUSEBUTTONDOWN:
+                    if (event.button.button == SDL_BUTTON_LEFT) {
+                        int mouseX = event.button.x;
+                        int mouseY = event.button.y;
+                        // Обработка щелчка левой кнопкой мыши
+
+                        add_cell(&board, mouseX, mouseY);
+                        execute = false;
+                        draw_board(&board, renderer);
+                        //printf("%d\n", board.board_array[mouseX][mouseY].alive);
+                        break;
+                    }
                 default:
                     break;
             }
@@ -230,8 +248,8 @@ void recalculate(struct Board* board, int size) {
 
 struct Cell check_rules(struct Cell* cell, int count){
     struct Cell result;
+    // правило 4
     if (!cell->alive && count == 3){
-        // правило 4
             result.alive = true;
         return result;
     } else if (!cell->alive){
@@ -249,4 +267,20 @@ struct Cell check_rules(struct Cell* cell, int count){
     }
 
     return result;
+}
+
+void add_cell(struct Board* board, int y, int x){
+    printf("x: %d y: %d\n", x, y);
+    int pos_x = x / CELL_SIZE;
+    int pos_y = y / CELL_SIZE;
+    struct Cell* new_cell = malloc(sizeof(struct Cell));
+
+    new_cell->alive = true;
+    new_cell->pos_x = pos_y;
+    new_cell->pos_y = pos_x;
+    board->board_array[pos_x][pos_y] = *new_cell;
+    //board->board_array[pos_x][pos_y].pos_y = pos_y;
+    printf("x: %d y: %d\n", pos_x, pos_y);
+    printf("Neighbors: %d\n", neighbors_count(board, &board->board_array[pos_x][pos_y], SIZE));
+    //board->board_array[pos_x][pos_y].alive = true;
 }
