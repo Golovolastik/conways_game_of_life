@@ -2,18 +2,10 @@
 #include <SDL_mouse.h>
 #include <stdbool.h>
 #include "structs.h"
+#include "prototypes.h"
 
 #define SIZE 25
 #define CELL_SIZE 30
-
-
-int neighbors_count(struct Board* board, struct Cell* cell, int size);
-struct Board init_board(int height, int width);
-void draw_board(struct Board* board, SDL_Renderer* renderer);
-void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board);
-void recalculate(struct Board* board, int size);
-struct Cell check_rules(struct Cell* cell, int count);
-void add_cell(struct Board* board, int x, int y);
 
 
 int main(int argc, char* argv[]) {
@@ -100,23 +92,24 @@ int main(int argc, char* argv[]) {
         if (execute) {
             recalculate(&board, SIZE);
             draw_board(&board, renderer);
-            // цикличные события
-            if (SDL_PollEvent(&event)){
-                switch (event.type) {
-                    case SDL_QUIT:
-                        quit = true;
-                        break;
-                    case SDL_KEYDOWN:
-                        if (event.key.keysym.sym == SDLK_RETURN) {
-                            execute = false;
-                        }
-                        break;
 
-                    default:
-                        break;
-                }
-            }
-            continue;
+            // цикличные события
+//            if (SDL_PollEvent(&event)){
+//                switch (event.type) {
+//                    case SDL_QUIT:
+//                        quit = true;
+//                        break;
+//                    case SDL_KEYDOWN:
+//                        if (event.key.keysym.sym == SDLK_RETURN) {
+//                            execute = false;
+//                        }
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//            continue;
         }
         // пауза и выход
         while (SDL_PollEvent(&event)) {
@@ -126,7 +119,7 @@ int main(int argc, char* argv[]) {
                     break;
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_RETURN) {
-                        execute = true;
+                        execute = !execute;
                     } else if (event.key.keysym.sym == SDLK_SPACE){
                         recalculate(&board, SIZE);
                         draw_board(&board, renderer);

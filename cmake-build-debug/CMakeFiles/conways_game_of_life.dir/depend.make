@@ -3,6 +3,7 @@
 
 CMakeFiles/conways_game_of_life.dir/main.c.o: \
  ../main.c \
+ ../prototypes.h \
  ../structs.h \
  /opt/homebrew/include/SDL2/SDL.h \
  /opt/homebrew/include/SDL2/SDL_assert.h \
