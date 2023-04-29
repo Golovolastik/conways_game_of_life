@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
                         quit = true;
                         break;
                     case SDL_KEYDOWN:
-                        if (event.key.keysym.sym == SDLK_SPACE) {
+                        if (event.key.keysym.sym == SDLK_RETURN) {
                             execute = false;
                         }
                         break;
@@ -125,8 +125,11 @@ int main(int argc, char* argv[]) {
                     quit = true;
                     break;
                 case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_SPACE) {
+                    if (event.key.keysym.sym == SDLK_RETURN) {
                         execute = true;
+                    } else if (event.key.keysym.sym == SDLK_SPACE){
+                        recalculate(&board, SIZE);
+                        draw_board(&board, renderer);
                     }
                     break;
                 case SDL_MOUSEBUTTONDOWN:
