@@ -273,17 +273,12 @@ struct Cell check_rules(struct Cell* cell, int count){
 }
 
 void add_cell(struct Board* board, int y, int x){
-    printf("x: %d y: %d\n", x, y);
     int pos_x = x / CELL_SIZE;
     int pos_y = y / CELL_SIZE;
     struct Cell* new_cell = malloc(sizeof(struct Cell));
-
     new_cell->alive = true;
     new_cell->pos_x = pos_y;
     new_cell->pos_y = pos_x;
     board->board_array[pos_x][pos_y] = *new_cell;
-    //board->board_array[pos_x][pos_y].pos_y = pos_y;
-    printf("x: %d y: %d\n", pos_x, pos_y);
-    printf("Neighbors: %d\n", neighbors_count(board, &board->board_array[pos_x][pos_y], SIZE));
-    //board->board_array[pos_x][pos_y].alive = true;
+
 }
