@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
                         int mouseY = event.button.y;
                         // Обработка щелчка левой кнопкой мыши
 
-                        add_cell(&board, mouseX, mouseY);
+                        change_cell(&board, mouseX, mouseY);
                         execute = false;
                         draw_board(&board, renderer);
                         //printf("%d\n", board.board_array[mouseX][mouseY].alive);
@@ -265,11 +265,11 @@ struct Cell check_rules(struct Cell* cell, int count){
     return result;
 }
 
-void add_cell(struct Board* board, int y, int x){
+void change_cell(struct Board* board, int y, int x){
     int pos_x = x / CELL_SIZE;
     int pos_y = y / CELL_SIZE;
     struct Cell* new_cell = malloc(sizeof(struct Cell));
-    new_cell->alive = true;
+    new_cell->alive = !board->board_array[pos_x][pos_y].alive;
     new_cell->pos_x = pos_y;
     new_cell->pos_y = pos_x;
     board->board_array[pos_x][pos_y] = *new_cell;
