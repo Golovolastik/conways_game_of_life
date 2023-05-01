@@ -172,12 +172,12 @@ void draw_board(struct Board* board, SDL_Renderer* renderer){
     // отрисовка поля квадратов
     SDL_Rect rects[SIZE*SIZE];
     // заполняем экран белым цветом
-    SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255);
+    SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255);
     SDL_RenderClear(renderer);
     draw_cells(rects, renderer, SIZE, board);
     // показать рендер
     SDL_RenderPresent(renderer);
-    SDL_Delay(500);
+    SDL_Delay(150);
 }
 
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board){
@@ -191,7 +191,7 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board
             rects[i*size + j].h = CELL_SIZE;
             // закрашиваем клетки
             if (board->board_array[i][j].alive) {
-                SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255);
+                SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255);
                 SDL_RenderFillRect(renderer, &rects[i*size + j]);
             }
             // рисуем границу клеток
