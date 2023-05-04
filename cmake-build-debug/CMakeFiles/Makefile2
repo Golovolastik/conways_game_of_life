@@ -54,10 +54,10 @@ RM = "/Users/aleksejankovic/Library/Application Support/JetBrains/Toolbox/apps/C
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life"
+CMAKE_SOURCE_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug"
+CMAKE_BINARY_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug"
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -81,14 +81,14 @@ clean: CMakeFiles/conways_game_of_life.dir/clean
 CMakeFiles/conways_game_of_life.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/conways_game_of_life.dir/build.make CMakeFiles/conways_game_of_life.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target conways_game_of_life"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target conways_game_of_life"
 .PHONY : CMakeFiles/conways_game_of_life.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/conways_game_of_life.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 2
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/conways_game_of_life.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 0
 .PHONY : CMakeFiles/conways_game_of_life.dir/rule
 
 # Convenience name for target.

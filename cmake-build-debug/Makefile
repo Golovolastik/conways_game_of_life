@@ -57,10 +57,10 @@ RM = "/Users/aleksejankovic/Library/Application Support/JetBrains/Toolbox/apps/C
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life"
+CMAKE_SOURCE_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug"
+CMAKE_BINARY_DIR = "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug//CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

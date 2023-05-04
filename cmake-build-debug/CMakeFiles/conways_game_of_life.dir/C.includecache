@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/main.c
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/main.c
 SDL.h
 -
 SDL_mouse.h
@@ -14,13 +14,13 @@ SDL_mouse.h
 stdbool.h
 -
 structs.h
-/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/structs.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/structs.h
 prototypes.h
-/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/prototypes.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/prototypes.h
 
-/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/prototypes.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/prototypes.h
 
-/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/main_work/conways_game_of_life/structs.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/structs.h
 
 /opt/homebrew/include/SDL2/SDL.h
 SDL_main.h

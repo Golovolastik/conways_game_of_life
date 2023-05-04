@@ -88,30 +88,13 @@ int main(int argc, char* argv[]) {
     draw_board(&board, renderer);
     bool quit = false;
     bool execute = false;
+    int state = 0; // навигация в меню
     while (!quit) {
         if (execute) {
             recalculate(&board, SIZE);
             draw_board(&board, renderer);
-
-            // цикличные события
-//            if (SDL_PollEvent(&event)){
-//                switch (event.type) {
-//                    case SDL_QUIT:
-//                        quit = true;
-//                        break;
-//                    case SDL_KEYDOWN:
-//                        if (event.key.keysym.sym == SDLK_RETURN) {
-//                            execute = false;
-//                        }
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//            }
-//            continue;
         }
-        // пауза и выход
+        // обработчик событий
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
@@ -273,5 +256,9 @@ void change_cell(struct Board* board, int y, int x){
     new_cell->pos_x = pos_y;
     new_cell->pos_y = pos_x;
     board->board_array[pos_x][pos_y] = *new_cell;
+
+}
+
+void init_menu(){
 
 }
