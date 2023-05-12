@@ -6,7 +6,9 @@
 #include "prototypes.h"
 
 #define SIZE 40
-#define CELL_SIZE 25
+#define HEIGHT_SIZE 30
+#define WIDTH_SIZE 40
+#define CELL_SIZE 20
 
 
 int main(int argc, char* argv[]) {
@@ -17,7 +19,7 @@ int main(int argc, char* argv[]) {
     SDL_Window* window = SDL_CreateWindow("Мое окно",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                              SIZE*CELL_SIZE, SIZE*CELL_SIZE, SDL_WINDOW_SHOWN);
+                                              WIDTH_SIZE*CELL_SIZE, HEIGHT_SIZE*CELL_SIZE, SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Ошибка при создании окна: %s\n", SDL_GetError());
         return 1;
@@ -33,10 +35,10 @@ int main(int argc, char* argv[]) {
     SDL_Texture* splash_texture = load_texture(renderer, "main_menu.png");
     render_texture(splash_texture, renderer, 0, 0);
     SDL_RenderPresent(renderer);
-    //SDL_Delay(2000);
+//    SDL_Delay(2000);
 
     // создание поля
-    struct Board board = init_board(SIZE, SIZE);
+    struct Board board = init_board(HEIGHT_SIZE, WIDTH_SIZE);
 
     // стартовая раскладка клеток
 
@@ -95,10 +97,9 @@ int main(int argc, char* argv[]) {
     //draw_board(&board, renderer);
     bool quit = false;
     bool execute = false;
-    int state = 0; // навигация в меню
     while (!quit) {
         if (execute) {
-            recalculate(&board, SIZE);
+            recalculate(&board);
             draw_board(&board, renderer);
         }
         // обработчик событий
@@ -111,7 +112,7 @@ int main(int argc, char* argv[]) {
                     if (event.key.keysym.sym == SDLK_RETURN) {
                         execute = !execute;
                     } else if (event.key.keysym.sym == SDLK_SPACE){
-                        recalculate(&board, SIZE);
+                        recalculate(&board);
                         draw_board(&board, renderer);
                     }
                     break;
@@ -124,7 +125,6 @@ int main(int argc, char* argv[]) {
                         change_cell(&board, mouseX, mouseY);
                         execute = false;
                         draw_board(&board, renderer);
-                        //printf("%d\n", board.board_array[mouseX][mouseY].alive);
                         break;
                     }
                 default:
@@ -160,48 +160,48 @@ struct Board init_board(int height, int width){
 
 void draw_board(struct Board* board, SDL_Renderer* renderer){
     // отрисовка поля квадратов
-    SDL_Rect rects[SIZE*SIZE];
+    SDL_Rect rects[WIDTH_SIZE*HEIGHT_SIZE];
     // заполняем экран белым цветом
     SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255);
     SDL_RenderClear(renderer);
-    draw_cells(rects, renderer, SIZE, board);
+    draw_cells(rects, renderer, board);
     // показать рендер
     SDL_RenderPresent(renderer);
     SDL_Delay(150);
 }
 
-void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, int size, struct Board* board){
+void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
     // отрисовываем квадратов
-    for (int i = 0; i<size; i++) {
-        for (int j=0; j<size; j++) {
+    for (int i = 0; i<HEIGHT_SIZE; i++) {
+        for (int j=0; j<WIDTH_SIZE; j++) {
             // инициализируем клетки
-            rects[i*size + j].y = (i) * CELL_SIZE;
-            rects[i*size + j].x = (j) * CELL_SIZE;
-            rects[i*size + j].w = CELL_SIZE;
-            rects[i*size + j].h = CELL_SIZE;
+            rects[i*WIDTH_SIZE + j].y = (i) * CELL_SIZE;
+            rects[i*WIDTH_SIZE + j].x = (j) * CELL_SIZE;
+            rects[i*WIDTH_SIZE + j].w = CELL_SIZE;
+            rects[i*WIDTH_SIZE + j].h = CELL_SIZE;
             // закрашиваем клетки
             if (board->board_array[i][j].alive) {
                 SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255);
-                SDL_RenderFillRect(renderer, &rects[i*size + j]);
+                SDL_RenderFillRect(renderer, &rects[i*WIDTH_SIZE + j]);
             }
             // рисуем границу клеток
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderDrawRect(renderer, &rects[i * size + j]);
+            SDL_RenderDrawRect(renderer, &rects[i * WIDTH_SIZE + j]);
 
         }
     }
 }
 
-int neighbors_count(struct Board* board, struct Cell* cell, int size) {
+int neighbors_count(struct Board* board, struct Cell* cell) {
     int neighbors = 0;
     for (int i = cell->pos_y - 1; i <= cell->pos_y + 1; i++) {
         if (i == -1){
             i++;
-        }else if (i == size){continue;}
+        }else if (i == HEIGHT_SIZE){continue;}
         for (int j = cell->pos_x - 1; j <= cell->pos_x + 1; j++) {
             if (j == -1){
                 j++;
-            }else if (j == size){continue;}
+            }else if (j == WIDTH_SIZE){continue;}
             if (j == cell->pos_x && i == cell->pos_y) { continue; }
             if (board->board_array[i][j].alive) {
                 neighbors++;
@@ -212,16 +212,16 @@ int neighbors_count(struct Board* board, struct Cell* cell, int size) {
     return neighbors;
 }
 
-void recalculate(struct Board* board, int size) {
+void recalculate(struct Board* board) {
     // пропускаем цикл если клетка не была активна
     struct Cell** temp_board;
-    temp_board = malloc(size *  sizeof(struct Cell*));
-    for (int i = 0; i < size; i++) {
-        temp_board[i] = malloc(size * sizeof(struct Cell));
+    temp_board = malloc(HEIGHT_SIZE *  sizeof(struct Cell*));
+    for (int i = 0; i < HEIGHT_SIZE; i++) {
+        temp_board[i] = malloc(WIDTH_SIZE * sizeof(struct Cell));
         // Инициализируем каждый элемент структурой Cell
-        for (int j = 0; j < size; j++) {
+        for (int j = 0; j < WIDTH_SIZE; j++) {
             // Создаем новый экземпляр структуры Cell
-            int neighbors = neighbors_count(board, &board->board_array[i][j], SIZE);
+            int neighbors = neighbors_count(board, &board->board_array[i][j]);
             // Присваиваем значение элементу массива
             temp_board[i][j] = check_rules(&board->board_array[i][j], neighbors);
             temp_board[i][j].pos_x = j;
