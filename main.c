@@ -1,11 +1,12 @@
 #include <SDL.h>
 #include <SDL_mouse.h>
+#include <SDL_image.h>
 #include <stdbool.h>
 #include "structs.h"
 #include "prototypes.h"
 
-#define SIZE 25
-#define CELL_SIZE 30
+#define SIZE 40
+#define CELL_SIZE 25
 
 
 int main(int argc, char* argv[]) {
@@ -27,6 +28,12 @@ int main(int argc, char* argv[]) {
         printf("Ошибка при создании рендерера: %s\n", SDL_GetError());
         return 1;
     }
+
+    // загрузка и отображение изображения
+    SDL_Texture* splash_texture = load_texture(renderer, "main_menu.png");
+    render_texture(splash_texture, renderer, 0, 0);
+    SDL_RenderPresent(renderer);
+    //SDL_Delay(2000);
 
     // создание поля
     struct Board board = init_board(SIZE, SIZE);
@@ -85,7 +92,7 @@ int main(int argc, char* argv[]) {
     // показать указатель мыши
     SDL_ShowCursor(SDL_ENABLE);
 
-    draw_board(&board, renderer);
+    //draw_board(&board, renderer);
     bool quit = false;
     bool execute = false;
     int state = 0; // навигация в меню
@@ -259,6 +266,17 @@ void change_cell(struct Board* board, int y, int x){
 
 }
 
-void init_menu(){
+SDL_Texture* load_texture(SDL_Renderer* renderer, const char* file_path) {
+    SDL_Surface* surface = IMG_Load(file_path);
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    return texture;
+}
 
+void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) {
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
+    SDL_RenderCopy(renderer, texture, NULL, &dst);
 }

@@ -14,7 +14,8 @@ set(CMAKE_C_COMPILER_ID "AppleClang")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "/opt/homebrew/include/SDL2"
+  "/Library/Frameworks/SDL2.framework/Headers"
+  "/Library/Frameworks/SDL2_image.framework/Headers"
   )
 
 # The set of dependency files which are needed:
