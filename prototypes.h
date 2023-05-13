@@ -15,5 +15,6 @@ void change_cell(struct Board* board, int x, int y);
 
 SDL_Texture* load_texture(SDL_Renderer* renderer, const char* file_path);
 void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
+void show_menu(SDL_Renderer *renderer, const char *file_path);
 
 #endif //CONWAYS_GAME_OF_LIFE_PROTOTYPES_H

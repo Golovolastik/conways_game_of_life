@@ -31,11 +31,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // загрузка и отображение изображения
-    SDL_Texture* splash_texture = load_texture(renderer, "main_menu.png");
-    render_texture(splash_texture, renderer, 0, 0);
-    SDL_RenderPresent(renderer);
-//    SDL_Delay(2000);
+    // показать указатель мыши
+    SDL_ShowCursor(SDL_ENABLE);
 
     // создание поля
     struct Board board = init_board(HEIGHT_SIZE, WIDTH_SIZE);
@@ -88,15 +85,12 @@ int main(int argc, char* argv[]) {
 //    board.board_array[8][14].alive = true;
 //    board.board_array[11][12].alive = true;
 
-    // основной цикл обработки событий
-    SDL_Event event;
-
-    // показать указатель мыши
-    SDL_ShowCursor(SDL_ENABLE);
-
     //draw_board(&board, renderer);
+    show_menu(renderer, "main_menu.png");
     bool quit = false;
     bool execute = false;
+    // основной цикл обработки событий
+    SDL_Event event;
     while (!quit) {
         if (execute) {
             recalculate(&board);
@@ -286,4 +280,12 @@ void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) 
     dst.y = y;
     SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
     SDL_RenderCopy(renderer, texture, NULL, &dst);
+}
+
+void show_menu(SDL_Renderer *renderer, const char *file_path){
+    // загрузка и отображение изображения
+    SDL_Texture* splash_texture = load_texture(renderer, file_path);
+    render_texture(splash_texture, renderer, 0, 0);
+    SDL_RenderPresent(renderer);
+//    SDL_Delay(2000);
 }
