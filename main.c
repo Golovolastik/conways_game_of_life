@@ -194,16 +194,23 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
 
 int neighbors_count(struct Board* board, struct Cell* cell) {
     int neighbors = 0;
+    int y_pos, x_pos;
     for (int i = cell->pos_y - 1; i <= cell->pos_y + 1; i++) {
+        y_pos = i;
         if (i == -1){
-            i++;
-        }else if (i == HEIGHT_SIZE){continue;}
+            y_pos = HEIGHT_SIZE-1;
+        }else if (i == HEIGHT_SIZE){
+            y_pos = 0;
+        }
         for (int j = cell->pos_x - 1; j <= cell->pos_x + 1; j++) {
+            x_pos = j;
             if (j == -1){
-                j++;
-            }else if (j == WIDTH_SIZE){continue;}
+                x_pos = WIDTH_SIZE-1;
+            }else if (j == WIDTH_SIZE){
+                x_pos = 0;
+            }
             if (j == cell->pos_x && i == cell->pos_y) { continue; }
-            if (board->board_array[i][j].alive) {
+            if (board->board_array[y_pos][x_pos].alive) {
                 neighbors++;
             }
         }
