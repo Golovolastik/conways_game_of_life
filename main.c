@@ -86,45 +86,75 @@ int main(int argc, char* argv[]) {
 //    board.board_array[11][12].alive = true;
 
     //draw_board(&board, renderer);
-    show_menu(renderer, "main_menu.png");
+    //show_menu(renderer, "main_menu.png");
     bool quit = false;
     bool execute = false;
+    int state = 0;
     // основной цикл обработки событий
     SDL_Event event;
     while (!quit) {
-        if (execute) {
-            recalculate(&board);
-            draw_board(&board, renderer);
-        }
-        // обработчик событий
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    quit = true;
-                    break;
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_RETURN) {
-                        execute = !execute;
-                    } else if (event.key.keysym.sym == SDLK_SPACE){
-                        recalculate(&board);
-                        draw_board(&board, renderer);
+        switch (state) {
+            case 0: {
+                show_menu(renderer, "4.png");
+                while (SDL_PollEvent(&event)) {
+                    switch (event.type) {
+                        case SDL_QUIT:
+                            quit = true;
+                            break;
+                        case SDL_KEYDOWN: {
+                            if (event.key.keysym.sym == SDLK_RETURN) {
+                                draw_board(&board, renderer);
+                                state = 1;
+                            }
+                            break;
+                        }
                     }
                     break;
-                case SDL_MOUSEBUTTONDOWN:
-                    if (event.button.button == SDL_BUTTON_LEFT) {
-                        int mouseX = event.button.x;
-                        int mouseY = event.button.y;
-                        // Обработка щелчка левой кнопкой мыши
+                }
 
-                        change_cell(&board, mouseX, mouseY);
-                        execute = false;
-                        draw_board(&board, renderer);
-                        break;
-                    }
-                default:
-                    break;
             }
+            case 1: {
+                if (execute) {
+                    recalculate(&board);
+                    draw_board(&board, renderer);
+                }
+                // обработчик событий
+                while (SDL_PollEvent(&event)) {
+                    switch (event.type) {
+                        case SDL_QUIT:
+                            quit = true;
+                            break;
+                        case SDL_KEYDOWN:
+                            if (event.key.keysym.sym == SDLK_RETURN) {
+                                execute = !execute;
+                            } else if (event.key.keysym.sym == SDLK_SPACE){
+                                recalculate(&board);
+                                draw_board(&board, renderer);
+                            } else if (event.key.keysym.sym == SDLK_ESCAPE){
+                                state = 0;
+                            }
+                            break;
+                        case SDL_MOUSEBUTTONDOWN:
+                            if (event.button.button == SDL_BUTTON_LEFT) {
+                                int mouseX = event.button.x;
+                                int mouseY = event.button.y;
+                                // Обработка щелчка левой кнопкой мыши
+
+                                change_cell(&board, mouseX, mouseY);
+                                execute = false;
+                                draw_board(&board, renderer);
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+            }
+            default:
+                break;
+
         }
+
     }
 
     SDL_DestroyRenderer(renderer);
