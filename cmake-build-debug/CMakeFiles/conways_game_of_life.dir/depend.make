@@ -108,7 +108,6 @@ CMakeFiles/conways_game_of_life.dir/main.c.o: \
  /Library/Frameworks/SDL2.framework/Headers/SDL_video.h \
  /Library/Frameworks/SDL2.framework/Headers/begin_code.h \
  /Library/Frameworks/SDL2.framework/Headers/close_code.h \
- /Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h \
  ../constants.h \
  ../main.c \
  ../prototypes.h \
