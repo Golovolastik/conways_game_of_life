@@ -17,4 +17,9 @@ SDL_Texture* load_texture(SDL_Renderer* renderer, const char* file_path);
 void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
 void show_menu(SDL_Renderer *renderer, const char *file_path);
 
+void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, int* state, bool* execute, bool* quit);
+void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, int* state, bool* execute, bool* quit);
+
+
+
 #endif //CONWAYS_GAME_OF_LIFE_PROTOTYPES_H

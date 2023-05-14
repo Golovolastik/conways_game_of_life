@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/functions.c">
+			<Option target="conways_game_of_life"/>
+		</Unit>
 		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/main.c">
 			<Option target="conways_game_of_life"/>
 		</Unit>

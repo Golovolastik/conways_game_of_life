@@ -20,5 +20,5 @@ find_library(SDL2_IMAGE_LIBRARY SDL2_IMAGE)
 
 
 
-add_executable(conways_game_of_life main.c)
+add_executable(conways_game_of_life main.c functions.c)
 target_link_libraries(conways_game_of_life ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${PNG_LIBRARY})

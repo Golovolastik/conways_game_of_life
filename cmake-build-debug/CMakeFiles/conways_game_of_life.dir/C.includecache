@@ -694,6 +694,24 @@ SDL2/begin_code.h
 SDL2/close_code.h
 -
 
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/constants.h
+
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/functions.c
+SDL.h
+-
+SDL_mouse.h
+-
+SDL_image.h
+-
+stdbool.h
+-
+structs.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/structs.h
+constants.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/constants.h
+prototypes.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/prototypes.h
+
 /Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/main.c
 SDL.h
 -
@@ -705,6 +723,8 @@ stdbool.h
 -
 structs.h
 /Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/structs.h
+constants.h
+/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/constants.h
 prototypes.h
 /Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/prototypes.h
 
