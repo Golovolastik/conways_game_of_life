@@ -717,8 +717,6 @@ SDL.h
 -
 SDL_mouse.h
 -
-SDL_image.h
--
 stdbool.h
 -
 structs.h
