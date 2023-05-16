@@ -4,10 +4,12 @@
 #include <SDL.h>
 #include <SDL_mouse.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <stdbool.h>
 #include "structs.h"
 #include "constants.h"
 #include "prototypes.h"
+#include "globals.h"
 
 struct Board init_board(int height, int width){
     struct Board board;
@@ -27,13 +29,14 @@ struct Board init_board(int height, int width){
     return board;
 }
 
-void draw_board(struct Board* board, SDL_Renderer* renderer){
+void draw_board(struct Board* board, SDL_Renderer* renderer, TTF_Font* font){
     // отрисовка поля квадратов
     SDL_Rect rects[WIDTH_SIZE*HEIGHT_SIZE];
     // заполняем экран белым цветом
     SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255);
     SDL_RenderClear(renderer);
     draw_cells(rects, renderer, board);
+    show_generation(font, renderer);
     // показать рендер
     SDL_RenderPresent(renderer);
     SDL_Delay(150);
@@ -165,7 +168,7 @@ void show_menu(SDL_Renderer *renderer, const char *file_path){
 //    SDL_Delay(2000);
 }
 
-void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, int* state, bool* execute, bool* quit){
+void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit){
     while (SDL_PollEvent(event)) {
         switch (event->type) {
             case SDL_QUIT:
@@ -173,7 +176,7 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                 break;
             case SDL_KEYDOWN: {
                 if (event->key.keysym.sym == SDLK_RETURN) {
-                    draw_board(board, renderer);
+                    draw_board(board, renderer, font);
                     *state = 1;
                 }
                 break;
@@ -183,7 +186,7 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
     }
 }
 
-void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, int* state, bool* execute, bool* quit){
+void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit){
     // обработчик событий
     while (SDL_PollEvent(event)) {
         switch (event->type) {
@@ -195,7 +198,7 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     *execute = !*execute;
                 } else if (event->key.keysym.sym == SDLK_SPACE){
                     recalculate(board);
-                    draw_board(board, renderer);
+                    draw_board(board, renderer, font);
                 } else if (event->key.keysym.sym == SDLK_ESCAPE){
                     *state = 0;
                 }
@@ -208,11 +211,40 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
 
                     change_cell(board, mouseX, mouseY);
                     *execute = false;
-                    draw_board(board, renderer);
+                    draw_board(board, renderer, font);
                     break;
                 }
             default:
                 break;
         }
     }
+}
+
+void show_generation(TTF_Font* font, SDL_Renderer* renderer){
+    // Pixels from our text
+    SDL_Color white = {255,255,255};
+    char* gen;
+    gen = malloc(15 * sizeof(char));
+    sprintf(gen, "Generation: %d", count_generation++);
+    SDL_Surface* surfaceText = TTF_RenderText_Solid(font, gen, white);
+    free(gen);
+    // Setup the texture
+    SDL_Texture* textureText = SDL_CreateTextureFromSurface(renderer,surfaceText);
+    // Free the surface
+    // We are done with it after we have uploaded to
+    // the texture
+    SDL_FreeSurface(surfaceText);
+
+    // Create a rectangle to draw on
+    SDL_Rect rectangle;
+    rectangle.x = 0;
+    rectangle.y = 500;
+    rectangle.w = 100;
+    rectangle.h = 50;
+
+    SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
+    //SDL_RenderClear(renderer);
+
+    // Render our text on a rectangle
+    SDL_RenderCopy(renderer,textureText,NULL,&rectangle);
 }

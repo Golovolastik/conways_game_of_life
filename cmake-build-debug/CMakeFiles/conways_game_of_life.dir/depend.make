@@ -53,8 +53,10 @@ CMakeFiles/conways_game_of_life.dir/functions.c.o: \
  /Library/Frameworks/SDL2.framework/Headers/begin_code.h \
  /Library/Frameworks/SDL2.framework/Headers/close_code.h \
  /Library/Frameworks/SDL2_image.framework/Headers/SDL_image.h \
+ /Library/Frameworks/SDL2_ttf.framework/Headers/SDL_ttf.h \
  ../constants.h \
  ../functions.c \
+ ../globals.h \
  ../prototypes.h \
  ../structs.h
 CMakeFiles/conways_game_of_life.dir/main.c.o: \
@@ -108,6 +110,7 @@ CMakeFiles/conways_game_of_life.dir/main.c.o: \
  /Library/Frameworks/SDL2.framework/Headers/SDL_video.h \
  /Library/Frameworks/SDL2.framework/Headers/begin_code.h \
  /Library/Frameworks/SDL2.framework/Headers/close_code.h \
+ /Library/Frameworks/SDL2_ttf.framework/Headers/SDL_ttf.h \
  ../constants.h \
  ../main.c \
  ../prototypes.h \

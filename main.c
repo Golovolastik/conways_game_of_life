@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_mouse.h>
+#include <SDL_ttf.h>
 #include <stdbool.h>
 #include "structs.h"
 #include "constants.h"
@@ -11,10 +12,11 @@ int main(int argc, char* argv[]) {
         printf("Ошибка инициализации SDL: %s\n", SDL_GetError());
         return 1;
     }
+
     SDL_Window* window = SDL_CreateWindow("Мое окно",
                                           SDL_WINDOWPOS_CENTERED,
                                           SDL_WINDOWPOS_CENTERED,
-                                              WIDTH_SIZE*CELL_SIZE, HEIGHT_SIZE*CELL_SIZE, SDL_WINDOW_SHOWN);
+                                          WIDTH_SIZE*CELL_SIZE, HEIGHT_SIZE*CELL_SIZE, SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Ошибка при создании окна: %s\n", SDL_GetError());
         return 1;
@@ -24,6 +26,17 @@ int main(int argc, char* argv[]) {
     if (renderer == NULL) {
         printf("Ошибка при создании рендерера: %s\n", SDL_GetError());
         return 1;
+    }
+
+    if(TTF_Init() == -1){
+        printf("Ошибка инициализации SDL2_ttf, error: %s\n", TTF_GetError());
+    }
+    // Load our font file and set the font size
+    TTF_Font* font = TTF_OpenFont("/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/sans.ttf",24);
+    // Confirm that it was loaded
+    if(font == NULL){
+        printf("Ошибка загрузки шрифта\n");
+        exit(1);
     }
 
     // показать указатель мыши
@@ -68,15 +81,18 @@ int main(int argc, char* argv[]) {
             // главное меню
             case 0: {
                 show_menu(renderer, IMAGE_PATH);
-                menu_events(&event, renderer, &board, &state, &execute, &quit);
+                menu_events(&event, renderer, &board, font, &state, &execute, &quit);
             }
             // симуляция
             case 1: {
                 if (execute) {
                     recalculate(&board);
-                    draw_board(&board, renderer);
+                    draw_board(&board, renderer, font);
+                    //show_score(font, renderer);
+                    //SDL_RenderPresent(renderer);
+                    //SDL_Delay(150);
                 }
-                game_events(&event, renderer, &board, &state, &execute, &quit);
+                game_events(&event, renderer, &board, font, &state, &execute, &quit);
 
             }
             default:
@@ -84,6 +100,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
