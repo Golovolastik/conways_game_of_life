@@ -17,6 +17,7 @@ set(CMAKE_C_COMPILER_ID "AppleClang")
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "/Library/Frameworks/SDL2.framework/Headers"
   "/Library/Frameworks/SDL2_image.framework/Headers"
+  "/Library/Frameworks/SDL2_ttf.framework/Headers"
   )
 
 # The set of dependency files which are needed:

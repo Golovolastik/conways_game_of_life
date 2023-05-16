@@ -3,22 +3,23 @@ project(conways_game_of_life C)
 
 set(CMAKE_C_STANDARD 11)
 
-set(SDL2_PATH "/Library/Frameworks/SDL2.framework/Headers")
-set(SDL2_IMAGE_PATH "/Library/Frameworks/SDL2_image.framework/Headers")
+# Установите путь к заголовочным файлам SDL2 и SDL2_ttf
+set(SDL2_INCLUDE_DIR "/Library/Frameworks/SDL2.framework/Headers")
+set(SDL2_IMAGE_INCLUDE_DIR "/Library/Frameworks/SDL2_image.framework/Headers")
+set(SDL2_TTF_INCLUDE_DIR "/Library/Frameworks/SDL2_ttf.framework/Headers")
 
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(PNG REQUIRED)
+# Установите путь к библиотекам SDL2 и SDL2_ttf
+set(SDL2_LIBRARY "/Library/Frameworks/SDL2.framework")
+set(SDL2_TTF_LIBRARY "/Library/Frameworks/SDL2_ttf.framework")
+set(SDL2_IMAGE_LIBRARY "/Library/Frameworks/SDL2_image.framework")
 
+# Найдите библиотеки SDL2 и SDL2_ttf
+find_library(SDL2_LIBRARY NAMES SDL2 PATHS ${SDL2_LIBRARY})
+find_library(SDL2_TTF_LIBRARY NAMES SDL2_ttf PATHS ${SDL2_TTF_LIBRARY})
+find_library(SDL2_IMAGE_LIBRARY NAMES SDL2_image PATHS ${SDL2_IMAGE_LIBRARY})
 
-include_directories(${SDL2_PATH} ${SDL2_IMAGE_PATH})
-
-find_library(PNG_LIBRARY png)
-find_library(SDL2_LIBRARY SDL2)
-find_library(SDL2_IMAGE_LIBRARY SDL2_IMAGE)
-#find_library(PNG_LIB PNG)
-
-
+# Добавьте директории с заголовочными файлами
+include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR})
 
 add_executable(conways_game_of_life main.c functions.c)
-target_link_libraries(conways_game_of_life ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${PNG_LIBRARY})
+target_link_libraries(conways_game_of_life ${SDL2_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2_IMAGE_LIBRARY})

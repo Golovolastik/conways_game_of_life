@@ -5,7 +5,7 @@
 		<Option title="conways_game_of_life"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\lib\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\SDL2\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\SDL2_image.framework\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\SDL2_image.framework\Resources\;CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\SDL2_image.framework\Resources\CMake\;"/>
+		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug"/>
@@ -46,6 +46,7 @@
 				<Compiler>
 					<Add directory="/Library/Frameworks/SDL2.framework/Headers"/>
 					<Add directory="/Library/Frameworks/SDL2_image.framework/Headers"/>
+					<Add directory="/Library/Frameworks/SDL2_ttf.framework/Headers"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/14.0.3/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -68,6 +69,7 @@
 				<Compiler>
 					<Add directory="/Library/Frameworks/SDL2.framework/Headers"/>
 					<Add directory="/Library/Frameworks/SDL2_image.framework/Headers"/>
+					<Add directory="/Library/Frameworks/SDL2_ttf.framework/Headers"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/14.0.3/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -90,18 +92,6 @@
 		</Unit>
 		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
-		</Unit>
-		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/../../../../../../../../../../../opt/homebrew/lib/cmake/SDL2/sdl2-config-version.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\SDL2\"/>
-		</Unit>
-		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/../../../../../../../../../../../opt/homebrew/lib/cmake/SDL2/sdl2-config.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\SDL2\"/>
-		</Unit>
-		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/../../../../../../../../../../../Library/Frameworks/SDL2_image.framework/Resources/CMake/sdl2_image-config-version.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\SDL2_image.framework\Resources\CMake\"/>
-		</Unit>
-		<Unit filename="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/../../../../../../../../../../../Library/Frameworks/SDL2_image.framework/Resources/CMake/sdl2_image-config.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\..\..\..\..\Library\Frameworks\SDL2_image.framework\Resources\CMake\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

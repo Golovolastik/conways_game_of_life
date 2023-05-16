@@ -103,7 +103,6 @@ conways_game_of_life_EXTERNAL_OBJECTS =
 conways_game_of_life: CMakeFiles/conways_game_of_life.dir/main.c.o
 conways_game_of_life: CMakeFiles/conways_game_of_life.dir/functions.c.o
 conways_game_of_life: CMakeFiles/conways_game_of_life.dir/build.make
-conways_game_of_life: /opt/homebrew/lib/libpng.dylib
 conways_game_of_life: CMakeFiles/conways_game_of_life.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable conways_game_of_life"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/conways_game_of_life.dir/link.txt --verbose=$(VERBOSE)

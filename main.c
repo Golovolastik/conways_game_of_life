@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
         switch (state) {
             // главное меню
             case 0: {
-                show_menu(renderer, "4.png");
+                show_menu(renderer, IMAGE_PATH);
                 menu_events(&event, renderer, &board, &state, &execute, &quit);
             }
             // симуляция
