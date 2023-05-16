@@ -9,7 +9,8 @@
 #include "structs.h"
 #include "constants.h"
 #include "prototypes.h"
-#include "globals.h"
+
+int count_generation = 0; // Объявление глобальной переменной
 
 struct Board init_board(int height, int width){
     struct Board board;

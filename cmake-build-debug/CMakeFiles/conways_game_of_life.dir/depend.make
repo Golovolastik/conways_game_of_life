@@ -56,7 +56,6 @@ CMakeFiles/conways_game_of_life.dir/functions.c.o: \
  /Library/Frameworks/SDL2_ttf.framework/Headers/SDL_ttf.h \
  ../constants.h \
  ../functions.c \
- ../globals.h \
  ../prototypes.h \
  ../structs.h
 CMakeFiles/conways_game_of_life.dir/main.c.o: \
