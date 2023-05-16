@@ -74,6 +74,7 @@ int main(int argc, char* argv[]) {
     bool quit = false;
     bool execute = false;
     int state = 0;
+
     // основной цикл обработки событий
     SDL_Event event;
     while (!quit) {
@@ -88,9 +89,6 @@ int main(int argc, char* argv[]) {
                 if (execute) {
                     recalculate(&board);
                     draw_board(&board, renderer, font);
-                    //show_score(font, renderer);
-                    //SDL_RenderPresent(renderer);
-                    //SDL_Delay(150);
                 }
                 game_events(&event, renderer, &board, font, &state, &execute, &quit);
 

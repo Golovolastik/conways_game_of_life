@@ -237,9 +237,9 @@ void show_generation(TTF_Font* font, SDL_Renderer* renderer){
 
     // Create a rectangle to draw on
     SDL_Rect rectangle;
-    rectangle.x = 0;
+    rectangle.x = 40;
     rectangle.y = 500;
-    rectangle.w = 100;
+    rectangle.w = 150;
     rectangle.h = 50;
 
     SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
