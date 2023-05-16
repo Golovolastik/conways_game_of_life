@@ -244,7 +244,6 @@ void show_generation(TTF_Font* font, SDL_Renderer* renderer){
     rectangle.h = 50;
 
     SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
-    //SDL_RenderClear(renderer);
 
     // Render our text on a rectangle
     SDL_RenderCopy(renderer,textureText,NULL,&rectangle);

@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         printf("Ошибка инициализации SDL2_ttf, error: %s\n", TTF_GetError());
     }
     // Load our font file and set the font size
-    TTF_Font* font = TTF_OpenFont("/Users/aleksejankovic/Desktop/Study/bsuir/2курс/Конструирование ПО/2sem/Курсач/main_work/conways_game_of_life/sans.ttf",24);
+    TTF_Font* font = TTF_OpenFont(FONT_PATH,24);
     // Confirm that it was loaded
     if(font == NULL){
         printf("Ошибка загрузки шрифта\n");
