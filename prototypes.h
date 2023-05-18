@@ -22,7 +22,7 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
 
 void show_generation(TTF_Font* font, SDL_Renderer* renderer);
 
-
+void draw_pentadec(struct Cell** board_array);
 
 
 #endif //CONWAYS_GAME_OF_LIFE_PROTOTYPES_H

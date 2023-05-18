@@ -166,7 +166,6 @@ void show_menu(SDL_Renderer *renderer, const char *file_path){
     SDL_Texture* splash_texture = load_texture(renderer, file_path);
     render_texture(splash_texture, renderer, 0, 0);
     SDL_RenderPresent(renderer);
-//    SDL_Delay(2000);
 }
 
 void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit){
@@ -177,11 +176,24 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                 break;
             case SDL_KEYDOWN: {
                 if (event->key.keysym.sym == SDLK_RETURN) {
+                    draw_pentadec(board->board_array);
                     draw_board(board, renderer, font);
                     *state = 1;
                 }
                 break;
             }
+            case SDL_MOUSEBUTTONDOWN: {
+                if (event->button.button == SDL_BUTTON_LEFT) {
+                    int mouseX = event->button.x;
+                    int mouseY = event->button.y;
+                    if (mouseY > 250 && mouseY < 350 && mouseX > 200 && mouseX < 600) {
+                        draw_board(board, renderer, font);
+                        *state = 1;
+                    }
+                    break;
+                }
+            }
+            default: break;
         }
         break;
     }
@@ -202,6 +214,15 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     draw_board(board, renderer, font);
                 } else if (event->key.keysym.sym == SDLK_ESCAPE){
                     *state = 0;
+                    count_generation = 0;
+                    struct Cell** temp_board;
+                    temp_board = malloc(HEIGHT_SIZE *  sizeof(struct Cell*));
+                    for (int i = 0; i < HEIGHT_SIZE; i++) {
+                        temp_board[i] = malloc(WIDTH_SIZE * sizeof(struct Cell));
+                    }
+                    free(board->board_array);
+                    board->board_array = temp_board;
+
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
@@ -209,7 +230,6 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     int mouseX = event->button.x;
                     int mouseY = event->button.y;
                     // Обработка щелчка левой кнопкой мыши
-
                     change_cell(board, mouseX, mouseY);
                     *execute = false;
                     draw_board(board, renderer, font);
@@ -247,4 +267,30 @@ void show_generation(TTF_Font* font, SDL_Renderer* renderer){
 
     // Render our text on a rectangle
     SDL_RenderCopy(renderer,textureText,NULL,&rectangle);
+}
+
+void draw_pentadec(struct Cell** board_array){
+    // стартовая раскладка клеток
+//    // 2 квадрата
+//    board_array[5][5].alive = true;
+//    board_array[5][6].alive = true;
+//    board_array[6][5].alive = true;
+//    board_array[6][6].alive = true;
+//    board_array[3][3].alive = true;
+//    board_array[4][3].alive = true;
+//    board_array[3][4].alive = true;
+//    board_array[4][4].alive = true;
+    // пентадекатлон
+    board_array[17][10].alive = true;
+    board_array[17][11].alive = true;
+    board_array[16][12].alive = true;
+    board_array[18][12].alive = true;
+    board_array[17][13].alive = true;
+    board_array[17][14].alive = true;
+    board_array[17][15].alive = true;
+    board_array[17][16].alive = true;
+    board_array[16][17].alive = true;
+    board_array[18][17].alive = true;
+    board_array[17][18].alive = true;
+    board_array[17][19].alive = true;
 }
