@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
     SDL_ShowCursor(SDL_ENABLE);
 
     // создание поля
-    struct Board board = init_board(HEIGHT_SIZE, WIDTH_SIZE);
+    struct Board board = init_board();
 
 //    // стартовая раскладка клеток
 //

@@ -12,10 +12,10 @@
 
 int count_generation = 0; // Объявление глобальной переменной
 
-struct Board init_board(int height, int width){
+struct Board init_board(){
     struct Board board;
-    board.height = height;
-    board.width = width;
+    board.height = HEIGHT_SIZE;
+    board.width = WIDTH_SIZE;
     board.board_array = malloc(board.height *  sizeof(struct Cell*));
     for (int i = 0; i < board.height; i++) {
         board.board_array[i] = malloc(board.width * sizeof(struct Cell));
@@ -154,10 +154,10 @@ SDL_Texture* load_texture(SDL_Renderer* renderer, const char* file_path) {
     return texture;
 }
 
-void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) {
+void render_texture(SDL_Texture* texture, SDL_Renderer* renderer) {
     SDL_Rect dst;
-    dst.x = x;
-    dst.y = y;
+    dst.x = 0;
+    dst.y = 0;
     SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
     SDL_RenderCopy(renderer, texture, NULL, &dst);
 }
@@ -165,7 +165,7 @@ void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) 
 void show_menu(SDL_Renderer *renderer, const char *file_path){
     // загрузка и отображение изображения
     SDL_Texture* splash_texture = load_texture(renderer, file_path);
-    render_texture(splash_texture, renderer, 0, 0);
+    render_texture(splash_texture, renderer);
     SDL_RenderPresent(renderer);
 }
 
@@ -220,6 +220,10 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     temp_board = malloc(HEIGHT_SIZE *  sizeof(struct Cell*));
                     for (int i = 0; i < HEIGHT_SIZE; i++) {
                         temp_board[i] = malloc(WIDTH_SIZE * sizeof(struct Cell));
+                        for (int j = 0; j < WIDTH_SIZE; j++) {
+                            temp_board[i][j].pos_x = j;
+                            temp_board[i][j].pos_y = i;
+                        }
                     }
                     free(board->board_array);
                     board->board_array = temp_board;
