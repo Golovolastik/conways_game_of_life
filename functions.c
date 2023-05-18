@@ -110,6 +110,7 @@ void recalculate(struct Board* board) {
     }
     free(board->board_array);
     board->board_array = temp_board;
+    count_generation++;
 }
 
 struct Cell check_rules(struct Cell* cell, int count){
@@ -246,7 +247,7 @@ void show_generation(TTF_Font* font, SDL_Renderer* renderer){
     SDL_Color white = {255,255,255};
     char* gen;
     gen = malloc(15 * sizeof(char));
-    sprintf(gen, "Generation: %d", count_generation++);
+    sprintf(gen, "Generation: %d", count_generation);
     SDL_Surface* surfaceText = TTF_RenderText_Solid(font, gen, white);
     free(gen);
     // Setup the texture
