@@ -15,13 +15,14 @@ void change_cell(struct Board* board, int x, int y);
 
 SDL_Texture* load_texture(SDL_Renderer* renderer, const char* file_path);
 void render_texture(SDL_Texture* texture, SDL_Renderer* renderer);
-void show_menu(SDL_Renderer *renderer, const char *file_path);
+void show_image(SDL_Renderer *renderer, char *file_path);
 
 void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit);
 void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit);
 
 void show_generation(TTF_Font* font, SDL_Renderer* renderer);
 
+void draw_random(struct Cell** board_array);
 void draw_pentadec(struct Cell** board_array);
 
 

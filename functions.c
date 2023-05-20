@@ -6,11 +6,13 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <stdbool.h>
+#include <time.h>
 #include "structs.h"
 #include "constants.h"
 #include "prototypes.h"
 
 int count_generation = 0; // Объявление глобальной переменной
+int color_theme = 0;
 
 struct Board init_board(){
     struct Board board;
@@ -33,14 +35,25 @@ struct Board init_board(){
 void draw_board(struct Board* board, SDL_Renderer* renderer, TTF_Font* font){
     // отрисовка поля квадратов
     SDL_Rect rects[WIDTH_SIZE*HEIGHT_SIZE];
-    // заполняем экран белым цветом
-    SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255);
+    // заполняем экран цветом
+    switch (color_theme){
+        case 1: {
+            SDL_SetRenderDrawColor(renderer, 251, 251, 251, 255); // белый
+            break;
+        }
+        default: {
+            SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255); // серый
+            break;
+        }
+    }
+
+
     SDL_RenderClear(renderer);
     draw_cells(rects, renderer, board);
     show_generation(font, renderer);
     // показать рендер
     SDL_RenderPresent(renderer);
-    SDL_Delay(150);
+    SDL_Delay(110);
 }
 
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
@@ -54,11 +67,20 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
             rects[i*WIDTH_SIZE + j].h = CELL_SIZE;
             // закрашиваем клетки
             if (board->board_array[i][j].alive) {
-                SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255);
+                switch (color_theme) {
+                    case 1:{
+                        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+                        break;
+                    }
+                    default:{
+                        SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255); // зеленый
+                        break;
+                    }
+                }
                 SDL_RenderFillRect(renderer, &rects[i*WIDTH_SIZE + j]);
             }
             // рисуем границу клеток
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
             SDL_RenderDrawRect(renderer, &rects[i * WIDTH_SIZE + j]);
 
         }
@@ -159,14 +181,29 @@ void render_texture(SDL_Texture* texture, SDL_Renderer* renderer) {
     dst.x = 0;
     dst.y = 0;
     SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
+    SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, &dst);
 }
 
-void show_menu(SDL_Renderer *renderer, const char *file_path){
+void show_image(SDL_Renderer *renderer, char *file_path){
+    char* image_path = NULL;
+    if (color_theme == 1) {
+        char white[6] = "1.png";
+        image_path = (char*)malloc(strlen(file_path) + strlen(white) + 1);
+        strcpy(image_path, file_path);
+        strcat(image_path, white);
+    } else {
+        char green[5] = ".png";
+        image_path = (char*)malloc(strlen(file_path) + strlen(green) + 1);
+        strcpy(image_path, file_path);
+        strcat(image_path, green);
+    }
     // загрузка и отображение изображения
-    SDL_Texture* splash_texture = load_texture(renderer, file_path);
+    SDL_RenderClear(renderer);
+    SDL_Texture* splash_texture = load_texture(renderer, image_path);
     render_texture(splash_texture, renderer);
     SDL_RenderPresent(renderer);
+    free(image_path);
 }
 
 void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, TTF_Font* font, int* state, bool* execute, bool* quit){
@@ -179,7 +216,11 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                 if (event->key.keysym.sym == SDLK_RETURN) {
                     draw_pentadec(board->board_array);
                     draw_board(board, renderer, font);
-                    *state = 1;
+                    *state = 2;
+                } else if (event->key.keysym.sym == SDLK_ESCAPE){
+                    *state = 0;
+                    count_generation = 0;
+                    *board = init_board();
                 }
                 break;
             }
@@ -187,9 +228,53 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                 if (event->button.button == SDL_BUTTON_LEFT) {
                     int mouseX = event->button.x;
                     int mouseY = event->button.y;
-                    if (mouseY > 250 && mouseY < 350 && mouseX > 200 && mouseX < 600) {
-                        draw_board(board, renderer, font);
-                        *state = 1;
+                    switch (*state) {
+                        case 0: {
+                            if (mouseY > 270 && mouseY < 330 && mouseX > 110 && mouseX < 410) {
+                                show_image(renderer, MAIN_MENU_ACTIVE_PATH);
+                                SDL_Delay(150);
+                                //draw_board(board, renderer, font);
+                                *state = 1;
+                            } else if (mouseY > 155 && mouseY < 195 && mouseX > 640 && mouseX < 730) {
+                                if (color_theme == 0) {
+                                    color_theme = 1;
+                                } else if (color_theme == 1){
+                                    color_theme = 0;
+                                }
+                                show_image(renderer, MAIN_MENU_PATH);
+                            }
+                            break;
+                        }
+                        case 1: {
+                            if (mouseY > 270 && mouseY < 330 && mouseX > 110 && mouseX < 310) {
+                                show_image(renderer, EMPTY_MODE_ACTIVE_PATH);
+                                SDL_Delay(150);
+                                //draw_board(board, renderer, font);
+                                *state = 2;
+                            } else if (mouseY > 350 && mouseY < 420 && mouseX > 110 && mouseX < 340) {
+                                show_image(renderer, RANDOM_MODE_ACTIVE_PATH);
+                                SDL_Delay(150);
+                                draw_random(board->board_array);
+                                draw_board(board, renderer, font);
+                                *state = 2;
+                            }
+                            else if (mouseY > 440 && mouseY < 520 && mouseX > 110 && mouseX < 360) {
+                                show_image(renderer, PATTERN_MODE_ACTIVE_PATH);
+                                SDL_Delay(150);
+                                draw_pentadec(board->board_array);
+                                draw_board(board, renderer, font);
+                                *state = 2;
+                            } else if (mouseY > 155 && mouseY < 195 && mouseX > 640 && mouseX < 730) {
+                                if (color_theme == 0) {
+                                    color_theme = 1;
+                                } else if (color_theme == 1){
+                                    color_theme = 0;
+                                }
+                                show_image(renderer, MODE_MENU_PATH);
+                            }
+                            break;
+                        }
+                        default: break;
                     }
                     break;
                 }
@@ -210,24 +295,14 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
             case SDL_KEYDOWN:
                 if (event->key.keysym.sym == SDLK_RETURN) {
                     *execute = !*execute;
+                    *state = 2;
                 } else if (event->key.keysym.sym == SDLK_SPACE){
                     recalculate(board);
                     draw_board(board, renderer, font);
                 } else if (event->key.keysym.sym == SDLK_ESCAPE){
                     *state = 0;
                     count_generation = 0;
-                    struct Cell** temp_board;
-                    temp_board = malloc(HEIGHT_SIZE *  sizeof(struct Cell*));
-                    for (int i = 0; i < HEIGHT_SIZE; i++) {
-                        temp_board[i] = malloc(WIDTH_SIZE * sizeof(struct Cell));
-                        for (int j = 0; j < WIDTH_SIZE; j++) {
-                            temp_board[i][j].pos_x = j;
-                            temp_board[i][j].pos_y = i;
-                        }
-                    }
-                    free(board->board_array);
-                    board->board_array = temp_board;
-
+                    *board = init_board();
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
@@ -248,11 +323,20 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
 
 void show_generation(TTF_Font* font, SDL_Renderer* renderer){
     // Pixels from our text
-    SDL_Color white = {255,255,255};
+    SDL_Color color;
+    if (color_theme == 1) {
+        color.r = 0;
+        color.g = 153;
+        color.b = 51;
+    } else {
+        color.r = 255;
+        color.g = 255;
+        color.b = 255;
+    }
     char* gen;
-    gen = malloc(15 * sizeof(char));
+    gen = malloc(25 * sizeof(char));
     sprintf(gen, "Generation: %d", count_generation);
-    SDL_Surface* surfaceText = TTF_RenderText_Solid(font, gen, white);
+    SDL_Surface* surfaceText = TTF_RenderText_Solid(font, gen, color);
     free(gen);
     // Setup the texture
     SDL_Texture* textureText = SDL_CreateTextureFromSurface(renderer,surfaceText);
@@ -268,11 +352,27 @@ void show_generation(TTF_Font* font, SDL_Renderer* renderer){
     rectangle.w = 150;
     rectangle.h = 50;
 
-    SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
+    //SDL_SetRenderDrawColor(renderer,0,0,0xFF,SDL_ALPHA_OPAQUE);
 
     // Render our text on a rectangle
     SDL_RenderCopy(renderer,textureText,NULL,&rectangle);
 }
+
+void draw_random(struct Cell** board_array){
+    // Инициализация генератора случайных чисел
+    srand(time(NULL));
+    for (int i=0; i<HEIGHT_SIZE; i++){
+        for (int j=0; j<WIDTH_SIZE; j++){
+            int random_number = rand() % 2; // Генерация случайного числа от 0 до 2
+            if (random_number == 0) {
+                board_array[i][j].alive = false;
+            } else {
+                board_array[i][j].alive = true;
+            }
+        }
+    }
+}
+
 
 void draw_pentadec(struct Cell** board_array){
     // стартовая раскладка клеток

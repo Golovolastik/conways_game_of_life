@@ -83,17 +83,26 @@ int main(int argc, char* argv[]) {
         switch (state) {
             // главное меню
             case 0: {
-                show_menu(renderer, IMAGE_PATH);
+                show_image(renderer, MAIN_MENU_PATH);
                 menu_events(&event, renderer, &board, font, &state, &execute, &quit);
+//                SDL_Delay(300);
+//                printf("State: %d\n", state);
+                break;
+            }
+            case 1: {
+                show_image(renderer, MODE_MENU_PATH);
+                menu_events(&event, renderer, &board, font, &state, &execute, &quit);
+                break;
             }
             // симуляция
-            case 1: {
+            case 2: {
                 if (execute) {
                     recalculate(&board);
                     draw_board(&board, renderer, font);
                 }
+                draw_board(&board, renderer, font);
                 game_events(&event, renderer, &board, font, &state, &execute, &quit);
-
+                break;
             }
             default:
                 break;
