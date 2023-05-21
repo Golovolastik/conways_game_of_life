@@ -201,9 +201,11 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     draw_board(board, renderer, font);
                     *state = 2;
                 } else if (event->key.keysym.sym == SDLK_ESCAPE){
-                    *state = 0;
-                    count_generation = 0;
-                    *board = init_board();
+                    if (*state == 1) {
+                        *state = 0;
+//                        count_generation = 0;
+//                        *board = init_board();
+                    }
                 }
                 break;
             }
@@ -393,8 +395,8 @@ void set_color(struct ColorPalette* colorPalette){
 
             //
             colorPalette->FontColor.r = 0;
-            colorPalette->FontColor.g = 153;
-            colorPalette->FontColor.b = 51;
+            colorPalette->FontColor.g = 255;
+            colorPalette->FontColor.b = 255;
 
             // Светло-серый
             colorPalette->BorderColor.r = 200;
@@ -410,9 +412,9 @@ void set_color(struct ColorPalette* colorPalette){
             colorPalette->AliveColor.g = 153;
             colorPalette->AliveColor.b = 51;
 
-            colorPalette->FontColor.r = 0;
-            colorPalette->FontColor.g = 0;
-            colorPalette->FontColor.b = 0;
+            colorPalette->FontColor.r = 234;
+            colorPalette->FontColor.g = 241;
+            colorPalette->FontColor.b = 225;
 
             colorPalette->BorderColor.r = 4;
             colorPalette->BorderColor.g = 24;
