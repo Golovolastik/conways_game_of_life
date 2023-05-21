@@ -18,4 +18,19 @@ struct Board {
 
 };
 
+struct Color {
+    int r, g, b;
+};
+
+struct ColorPalette {
+    struct Color AliveColor;
+    struct Color DeadColor;
+    struct Color BorderColor;
+    struct Color FontColor;
+
+};
+
+
+
+
 #endif //CONWAYS_GAME_OF_LIFE_STRUCTS_H

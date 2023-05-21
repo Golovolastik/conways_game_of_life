@@ -11,11 +11,15 @@
 #include "constants.h"
 #include "prototypes.h"
 
-int count_generation = 0; // Объявление глобальной переменной
+// Объявление глобальной переменной
+int count_generation = 0;
 int color_theme = 0;
+struct ColorPalette clr;
 
 struct Board init_board(){
+    // инициализация поля
     struct Board board;
+    set_color(&clr);
     board.height = HEIGHT_SIZE;
     board.width = WIDTH_SIZE;
     board.board_array = malloc(board.height *  sizeof(struct Cell*));
@@ -28,7 +32,6 @@ struct Board init_board(){
             board.board_array[i][j] = new_cell; // Присваиваем значение элементу массива
         }
     }
-
     return board;
 }
 
@@ -36,18 +39,7 @@ void draw_board(struct Board* board, SDL_Renderer* renderer, TTF_Font* font){
     // отрисовка поля квадратов
     SDL_Rect rects[WIDTH_SIZE*HEIGHT_SIZE];
     // заполняем экран цветом
-    switch (color_theme){
-        case 1: {
-            SDL_SetRenderDrawColor(renderer, 251, 251, 251, 255); // белый
-            break;
-        }
-        default: {
-            SDL_SetRenderDrawColor(renderer, 51, 51, 51, 255); // серый
-            break;
-        }
-    }
-
-
+    SDL_SetRenderDrawColor(renderer, clr.DeadColor.r, clr.DeadColor.g, clr.DeadColor.b, 255); // белый
     SDL_RenderClear(renderer);
     draw_cells(rects, renderer, board);
     show_generation(font, renderer);
@@ -57,7 +49,7 @@ void draw_board(struct Board* board, SDL_Renderer* renderer, TTF_Font* font){
 }
 
 void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
-    // отрисовываем квадратов
+    // отрисовываем квадраты
     for (int i = 0; i<HEIGHT_SIZE; i++) {
         for (int j=0; j<WIDTH_SIZE; j++) {
             // инициализируем клетки
@@ -67,20 +59,11 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
             rects[i*WIDTH_SIZE + j].h = CELL_SIZE;
             // закрашиваем клетки
             if (board->board_array[i][j].alive) {
-                switch (color_theme) {
-                    case 1:{
-                        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-                        break;
-                    }
-                    default:{
-                        SDL_SetRenderDrawColor(renderer, 0, 153, 51, 255); // зеленый
-                        break;
-                    }
-                }
+                SDL_SetRenderDrawColor(renderer, clr.AliveColor.r, clr.AliveColor.g, clr.AliveColor.b, 255); // зеленый
                 SDL_RenderFillRect(renderer, &rects[i*WIDTH_SIZE + j]);
             }
             // рисуем границу клеток
-            SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+            SDL_SetRenderDrawColor(renderer, clr.BorderColor.r, clr.BorderColor.g, clr.BorderColor.b, 255);
             SDL_RenderDrawRect(renderer, &rects[i * WIDTH_SIZE + j]);
 
         }
@@ -88,6 +71,7 @@ void draw_cells(SDL_Rect rects[], SDL_Renderer* renderer, struct Board* board){
 }
 
 int neighbors_count(struct Board* board, struct Cell* cell) {
+    // подсчет живых соседей
     int neighbors = 0;
     int y_pos, x_pos;
     for (int i = cell->pos_y - 1; i <= cell->pos_y + 1; i++) {
@@ -110,7 +94,6 @@ int neighbors_count(struct Board* board, struct Cell* cell) {
             }
         }
     }
-
     return neighbors;
 }
 
@@ -241,6 +224,7 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                                 } else if (color_theme == 1){
                                     color_theme = 0;
                                 }
+                                set_color(&clr);
                                 show_image(renderer, MAIN_MENU_PATH);
                             }
                             break;
@@ -267,8 +251,10 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                             } else if (mouseY > 155 && mouseY < 195 && mouseX > 640 && mouseX < 730) {
                                 if (color_theme == 0) {
                                     color_theme = 1;
+                                    set_color(&clr);
                                 } else if (color_theme == 1){
                                     color_theme = 0;
+                                    set_color(&clr);
                                 }
                                 show_image(renderer, MODE_MENU_PATH);
                             }
@@ -301,6 +287,7 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
                     draw_board(board, renderer, font);
                 } else if (event->key.keysym.sym == SDLK_ESCAPE){
                     *state = 0;
+                    *execute = false;
                     count_generation = 0;
                     *board = init_board();
                 }
@@ -323,16 +310,7 @@ void game_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
 
 void show_generation(TTF_Font* font, SDL_Renderer* renderer){
     // Pixels from our text
-    SDL_Color color;
-    if (color_theme == 1) {
-        color.r = 0;
-        color.g = 153;
-        color.b = 51;
-    } else {
-        color.r = 255;
-        color.g = 255;
-        color.b = 255;
-    }
+    SDL_Color color = {clr.FontColor.r, clr.FontColor.g, clr.FontColor.b};
     char* gen;
     gen = malloc(25 * sizeof(char));
     sprintf(gen, "Generation: %d", count_generation);
@@ -398,4 +376,48 @@ void draw_pentadec(struct Cell** board_array){
     board_array[18][17].alive = true;
     board_array[17][18].alive = true;
     board_array[17][19].alive = true;
+}
+
+void set_color(struct ColorPalette* colorPalette){
+    switch (color_theme){
+        case 1:
+            // Черный
+            colorPalette->AliveColor.r = 0;
+            colorPalette->AliveColor.g = 0;
+            colorPalette->AliveColor.b = 0;
+
+            // Белый
+            colorPalette->DeadColor.r = 255;
+            colorPalette->DeadColor.g = 255;
+            colorPalette->DeadColor.b = 255;
+
+            //
+            colorPalette->FontColor.r = 0;
+            colorPalette->FontColor.g = 153;
+            colorPalette->FontColor.b = 51;
+
+            // Светло-серый
+            colorPalette->BorderColor.r = 200;
+            colorPalette->BorderColor.g = 200;
+            colorPalette->BorderColor.b = 200;
+            break;
+        default: {
+            colorPalette->DeadColor.r = 51;
+            colorPalette->DeadColor.g = 51;
+            colorPalette->DeadColor.b = 51;
+
+            colorPalette->AliveColor.r = 0;
+            colorPalette->AliveColor.g = 153;
+            colorPalette->AliveColor.b = 51;
+
+            colorPalette->FontColor.r = 0;
+            colorPalette->FontColor.g = 0;
+            colorPalette->FontColor.b = 0;
+
+            colorPalette->BorderColor.r = 4;
+            colorPalette->BorderColor.g = 24;
+            colorPalette->BorderColor.b = 4;
+            break;
+        }
+    }
 }

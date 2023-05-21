@@ -22,6 +22,8 @@ void menu_events(SDL_Event* event, SDL_Renderer* renderer, struct Board* board, 
 
 void show_generation(TTF_Font* font, SDL_Renderer* renderer);
 
+void set_color(struct ColorPalette*);
+
 void draw_random(struct Cell** board_array);
 void draw_pentadec(struct Cell** board_array);
 
