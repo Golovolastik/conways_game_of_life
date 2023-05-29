@@ -46,32 +46,6 @@ int main(int argc, char* argv[]) {
     struct Board board = init_board();
 
 //    // стартовая раскладка клеток
-//
-//    // 2 квадрата
-//    board.board_array[5][5].alive = true;
-//    board.board_array[5][6].alive = true;
-//    board.board_array[6][5].alive = true;
-//    board.board_array[6][6].alive = true;
-//    board.board_array[3][3].alive = true;
-//    board.board_array[4][3].alive = true;
-//    board.board_array[3][4].alive = true;
-//    board.board_array[4][4].alive = true;
-//
-//    // пентадекатлон
-//    board.board_array[17][10].alive = true;
-//    board.board_array[17][11].alive = true;
-//    board.board_array[16][12].alive = true;
-//    board.board_array[18][12].alive = true;
-//    board.board_array[17][13].alive = true;
-//    board.board_array[17][14].alive = true;
-//    board.board_array[17][15].alive = true;
-//    board.board_array[17][16].alive = true;
-//    board.board_array[16][17].alive = true;
-//    board.board_array[18][17].alive = true;
-//    board.board_array[17][18].alive = true;
-//    board.board_array[17][19].alive = true;
-
-//    draw_pentadec(board.board_array);
 
     bool quit = false;
     bool execute = false;
@@ -85,8 +59,6 @@ int main(int argc, char* argv[]) {
             case 0: {
                 show_image(renderer, MAIN_MENU_PATH);
                 menu_events(&event, renderer, &board, font, &state, &execute, &quit);
-//                SDL_Delay(300);
-//                printf("State: %d\n", state);
                 break;
             }
             case 1: {
